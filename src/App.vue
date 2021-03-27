@@ -20,8 +20,9 @@ export default {
   mounted () {
     const userName = localStorage.getItem('userName')
     if (!userName) {
-      this.openFormModal()
+      return this.openFormModal()
     }
+    this.$store.dispatch('sync/createSocketConnection')
   }
 }
 </script>

@@ -19,7 +19,7 @@ export default {
   }),
   methods: {
     createRoom () {
-
+      this.$store.dispatch('chat/createRoom', this.roomName)
     }
   }
 }

@@ -16,6 +16,7 @@ export default {
   methods: {
     saveUserName () {
       localStorage.setItem('userName', this.userName)
+      this.$store.dispatch('sync/createSocketConnection')
       this.$modal.hide('form-modal')
     }
   }

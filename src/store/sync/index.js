@@ -1,8 +1,14 @@
+import config from '@/config/default'
+
 export default {
   namespaced: true,
   state: {
+    socket: null
   },
   mutations: {
+    setSocket (state, socket) {
+      state.socket = socket
+    }
   },
   actions: {
     async execute (_, { url, options, silent = false, loader }) {
@@ -23,6 +29,19 @@ export default {
       } finally {
         this.dispatch('ui/setLoader', { loader, active: false })
       }
+    },
+    createSocketConnection ({ state, commit }) {
+      if (state.socket) {
+        return
+      }
+      const userName = localStorage.getItem('userName')
+      const socket = new WebSocket(config.ws.baseUrl.replace('{username}', userName))
+
+      // socket.onmessage = (event) => {
+      //   console.log(event.data)
+      // }
+
+      commit('setSocket', socket)
     }
   },
   modules: {
