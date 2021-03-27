@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <modal name="form-modal" :click-to-close="false">
-      Введите свое имя
-      <form @submit.prevent="saveUserName">
-        <input v-model="userName">
-        <button type="submit">Save</button>
-      </form>
-    </modal>
-  </div>
+  <modal name="form-modal" :click-to-close="false">
+    Введите свое имя
+    <form @submit.prevent="saveUserName">
+      <input v-model="userName">
+      <button type="submit">Save</button>
+    </form>
+  </modal>
 </template>
 
 <script>

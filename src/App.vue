@@ -1,24 +1,26 @@
 <template>
   <div id="app">
     <form-modal />
+    <create-room-modal />
     <router-view/>
   </div>
 </template>
 
 <script>
 import FormModal from '@/components/FormModal'
+import CreateRoomModal from './components/CreateRoomModal.vue'
 
 export default {
-  components: { FormModal },
+  components: { FormModal, CreateRoomModal },
   methods: {
-    setUserName () {
+    openFormModal () {
       this.$modal.show('form-modal')
     }
   },
   mounted () {
     const userName = localStorage.getItem('userName')
     if (!userName) {
-      this.setUserName()
+      this.openFormModal()
     }
   }
 }
