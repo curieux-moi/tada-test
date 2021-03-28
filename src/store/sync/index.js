@@ -30,10 +30,14 @@ export default {
         this.dispatch('ui/setLoader', { loader, active: false })
       }
     },
+
     createSocketConnection ({ state, commit, dispatch }) {
       if (state.socket) {
         return
       }
+
+      this.dispatch('ui/setLoader', { loader: 'socket', active: true })
+
       const userName = localStorage.getItem('userName')
       const socket = new WebSocket(config.ws.baseUrl.replace('{username}', userName))
       commit('setSocket', socket)
@@ -41,6 +45,13 @@ export default {
       dispatch('handleSocketConnection')
       dispatch('handleSocketMessage')
     },
+
+    handleSocketConnection ({ state }) {
+      state.socket.onopen = () => {
+        this.dispatch('ui/setLoader', { loader: 'socket', active: false })
+      }
+    },
+
     handleSocketMessage ({ state, rootState }) {
       state.socket.onmessage = ({ data }) => {
         data = JSON.parse(data)
@@ -50,8 +61,11 @@ export default {
           this.dispatch('chat/updateMessageList', { room: data.room, messages: data })
         }
       }
+    },
+
+    sendSocketData ({ state }, data) {
+      if (!state.socket) return
+      state.socket.send(JSON.stringify(data))
     }
-  },
-  modules: {
   }
 }

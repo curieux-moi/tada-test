@@ -9,25 +9,19 @@ export default {
 
     commit('updateRoomList', rooms || [])
   },
-  createRoom ({ commit }, roomName) {
-    const userName = localStorage.getItem('userName')
-    const message = {
-      created: new Date().toISOString(),
-      room: roomName,
-      sender: { username: 'System' },
-      text: `${userName} создал комнату`
-    }
 
-    commit('setMessageList', {
+  async createRoom ({ dispatch }, roomName) {
+    await dispatch('sendMessage', {
       room: roomName,
-      messages: [message]
+      text: 'Я создал комнату!'
     })
-    commit('updateLastMessage', { room: roomName, message })
+    await dispatch('setRoomList')
   },
+
   async getRoomHistory ({ dispatch }, roomName) {
     const { result: messages } = await this.dispatch('sync/execute', {
       url: config.api.baseUrl + `/rooms/${roomName}/history`,
-      loader: 'roomList'
+      loader: 'messageList'
     })
 
     dispatch('setMessageList', {
@@ -36,6 +30,19 @@ export default {
       messages: Object.freeze(messages || [])
     })
   },
+
+  clearRoomHistory ({ dispatch }, roomName) {
+    dispatch('setMessageList', {
+      room: roomName,
+      messages: []
+    })
+  },
+
+  sendMessage (_, { text, room }) {
+    const id = localStorage.getItem('userId')
+    this.dispatch('sync/sendSocketData', { text, room, id })
+  },
+
   setMessageList ({ commit }, data) {
     commit('setMessageList', data)
   },

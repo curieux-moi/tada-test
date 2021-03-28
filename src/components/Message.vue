@@ -1,8 +1,11 @@
 <template>
   <div>
-    {{ getMessageTime(message.created) }}
-    {{ message.sender.username }}:
-    {{ message.text }}
+    <div class="message">
+      {{ getMessageTime(message.created) }}
+      {{ message.sender.username }}:
+      {{ message.text }}
+    </div>
+    <br>
   </div>
 </template>
 
@@ -27,5 +30,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.message {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 20px;
+  padding: 30px 25px 25px 25px;
+  background-color: #8ff7c7;
+  border-radius: 25px;
+}
 </style>

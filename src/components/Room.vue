@@ -55,8 +55,11 @@ export default {
   }
 
   &__preview {
+    height: 70px;
+    width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
+
     span {
       margin-right: 5px;
     }
@@ -64,6 +67,6 @@ export default {
 }
 
 .sender {
-  color: #4fb7c7;
+  color: #fff;
 }
 </style>

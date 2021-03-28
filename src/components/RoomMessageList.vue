@@ -1,13 +1,19 @@
 <template>
-  <div>
+  <div class="message-list">
     <message
       v-for="message in messages"
       :key="message.created"
       :message="message"
       v-node-intersect="intersectionObserver"
     />
-    <div v-if="newMessageCame" @click="scrollToBottom">
+
+    <div
+      v-if="newMessageCame"
+      @click="scrollToBottom"
+      class="message-list__new"
+    >
       Новые сообщения
+      <img src="../assets/down-arrow.png" alt="Новые сообщения">
     </div>
   </div>
 </template>
@@ -61,5 +67,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.message-list {
 
+  &__new {
+    position: fixed;
+    bottom: 20%;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+
+    background-color: #53aae4;
+    border-radius: 5px;
+    cursor: pointer;
+
+    img {
+      margin-left: 5px;
+      width: 30px;
+    }
+  }
+}
 </style>

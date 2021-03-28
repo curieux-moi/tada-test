@@ -1,6 +1,6 @@
 <template>
   <div>
-    <room-list :rooms="rooms" />
+    <room-list :rooms="rooms" v-if="Object.keys(rooms).length"/>
   </div>
 </template>
 

@@ -10,7 +10,9 @@ export default {
       }
     },
     loaders: {
-      roomList: false
+      roomList: false,
+      messageList: false,
+      socket: false
     }
   },
   mutations: {
@@ -18,7 +20,7 @@ export default {
       state.notifications[type] = { active, message }
     },
     setLoader (state, { loader, active }) {
-      state[loader] = active
+      state.loaders[loader] = active
     }
   },
   actions: {
