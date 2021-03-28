@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ name }}</h1>
-    <room-message-list :messages="messages" />
+    <room-message-list :messages="messages" v-if="messages.length"/>
   </div>
 </template>
 
@@ -19,13 +19,10 @@ export default {
   data: () => ({
     messages: []
   }),
-  created () {
-    this.$store.dispatch('chat/getRoomHistory', this.name)
-      .then(({ result }) => {
-        console.log(result[0])
-        this.messages = result || []
-      })
-      .then(() => window.scrollTo(0, document.body.scrollHeight))
+  async created () {
+    const { result: messages } = await this.$store.dispatch('chat/getRoomHistory', this.name)
+    this.messages = Object.freeze(messages || []) // freeze messages for better performace making them reactiveless
+    // this.messages = [...result, ...result, ...result] || []
   }
 }
 </script>

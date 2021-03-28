@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'room', params: {name: formatedRoomName}}" class="room">
+  <router-link :to="{name: 'room', params: {name: room.name}}" class="room">
     <h2>{{ room.name }}</h2>
     <div class="room__preview">
       <span class="sender">{{ messageTime }}</span>
@@ -20,9 +20,6 @@ export default {
     }
   },
   computed: {
-    formatedRoomName () {
-      return this.room.name.trim().replace(/\s/g, '-')
-    },
     sender () {
       return this.room.last_message?.sender?.username
     },

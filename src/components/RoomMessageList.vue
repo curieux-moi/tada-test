@@ -1,29 +1,48 @@
 <template>
   <div>
-    <div v-for="message in messages" :key="message.created">
-      {{ getMessageTime(message.created) }}
-      {{ message.sender.username }}:
-      {{ message.text }}
-    </div>
+    <message
+      v-for="message in messages"
+      :key="message.created"
+      :message="message"
+      v-node-intersect="intersectionObserver"
+    />
   </div>
 </template>
 
 <script>
-import { DateTime } from 'luxon'
-
-const dt = DateTime
+import Message from './Message.vue'
+import nodeIntersect from '@/directives/nodeIntersect'
 
 export default {
+  components: { Message },
   props: {
     messages: {
       type: Array,
       default: () => []
     }
   },
-  methods: {
-    getMessageTime (isoString) {
-      return dt.fromISO(isoString).setLocale('ru').toFormat('t')
+  data () {
+    return {
+      intersectionObserver: new IntersectionObserver(this.handleIntersections)
     }
+  },
+  mounted () {
+    window.scrollTo(0, document.body.scrollHeight)
+  },
+  methods: {
+    // hide Elements ain't seen on the screen to optimize render
+    handleIntersections (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.$set(entry, 'target.hidden', false)
+        } else {
+          this.$set(entry, 'target.hidden', true)
+        }
+      })
+    }
+  },
+  directives: {
+    'node-intersect': nodeIntersect
   }
 }
 </script>
