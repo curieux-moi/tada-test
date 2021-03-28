@@ -9,12 +9,13 @@ import RoomList from '../components/RoomList.vue'
 
 export default {
   components: { RoomList },
-  data: () => ({
-    rooms: []
-  }),
-  async created () {
-    const { result } = await this.$store.dispatch('chat/getRooms')
-    this.rooms = result || []
+  computed: {
+    rooms () {
+      return this.$store.getters['chat/roomList']
+    }
+  },
+  created () {
+    this.$store.dispatch('chat/setRoomList')
   }
 }
 </script>

@@ -30,18 +30,26 @@ export default {
         this.dispatch('ui/setLoader', { loader, active: false })
       }
     },
-    createSocketConnection ({ state, commit }) {
+    createSocketConnection ({ state, commit, dispatch }) {
       if (state.socket) {
         return
       }
       const userName = localStorage.getItem('userName')
       const socket = new WebSocket(config.ws.baseUrl.replace('{username}', userName))
-
-      // socket.onmessage = (event) => {
-      //   console.log(event.data)
-      // }
-
       commit('setSocket', socket)
+
+      dispatch('handleSocketConnection')
+      dispatch('handleSocketMessage')
+    },
+    handleSocketMessage ({ state, rootState }) {
+      state.socket.onmessage = ({ data }) => {
+        data = JSON.parse(data)
+        const rooms = rootState.chat.rooms
+        if (rooms[data.room]) {
+          this.dispatch('chat/updateLastMessage', { room: data.room, message: data })
+          this.dispatch('chat/updateMessageList', { room: data.room, messages: data })
+        }
+      }
     }
   },
   modules: {

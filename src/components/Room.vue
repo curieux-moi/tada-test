@@ -4,7 +4,7 @@
     <div class="room__preview">
       <span class="sender">{{ messageTime }}</span>
       <span class="sender">{{ sender }}:</span>
-      <span>{{ room.last_message.text }}</span>
+      <span>{{ lastMessage.text }}</span>
     </div>
   </router-link>
 </template>
@@ -20,10 +20,14 @@ export default {
     }
   },
   computed: {
+    lastMessage () {
+      return this.room.last_message || {}
+    },
     sender () {
-      return this.room.last_message?.sender?.username
+      return this.lastMessage.sender?.username
     },
     messageTime () {
+      if (!this.lastMessage?.created) return
       const dt = DateTime.fromISO(this.room.last_message.created)
       return dt.setLocale('ru').toFormat('t')
     }

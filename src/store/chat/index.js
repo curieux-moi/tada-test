@@ -1,27 +1,19 @@
-import config from '@/config/default'
+import actions from './actions'
+import mutations from './mutations'
 
 export default {
   namespaced: true,
   state: {
-    socket: null
+    rooms: {}
   },
-  mutations: {
-  },
-  actions: {
-    getRooms () {
-      return this.dispatch('sync/execute', {
-        url: config.api.baseUrl + '/rooms',
-        loader: 'roomList'
-      })
+  mutations,
+  actions,
+  getters: {
+    roomList (state) {
+      return state.rooms
     },
-    createRoom (context, roomName) {
-
-    },
-    getRoomHistory (_, roomName) {
-      return this.dispatch('sync/execute', {
-        url: config.api.baseUrl + `/rooms/${roomName}/history`,
-        loader: 'roomList'
-      })
+    messageList: (state) => (room) => {
+      return state.rooms[room]?.messages || []
     }
   }
 }

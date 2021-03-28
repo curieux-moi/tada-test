@@ -20,6 +20,7 @@ export default {
   methods: {
     createRoom () {
       this.$store.dispatch('chat/createRoom', this.roomName)
+      this.$modal.hide('create-room-modal')
     }
   }
 }

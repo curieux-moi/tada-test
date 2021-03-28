@@ -13,8 +13,8 @@ export default {
   components: { Room, CreateRoom },
   props: {
     rooms: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => ({})
     }
   }
 }

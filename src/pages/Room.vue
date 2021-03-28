@@ -16,13 +16,13 @@ export default {
       default: ''
     }
   },
-  data: () => ({
-    messages: []
-  }),
-  async created () {
-    const { result: messages } = await this.$store.dispatch('chat/getRoomHistory', this.name)
-    this.messages = Object.freeze(messages || []) // freeze messages for better performace making them reactiveless
-    // this.messages = [...result, ...result, ...result] || []
+  created () {
+    this.$store.dispatch('chat/getRoomHistory', this.name)
+  },
+  computed: {
+    messages () {
+      return this.$store.getters['chat/messageList'](this.name)
+    }
   }
 }
 </script>

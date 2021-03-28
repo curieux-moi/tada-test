@@ -6,6 +6,9 @@
       :message="message"
       v-node-intersect="intersectionObserver"
     />
+    <div v-if="newMessageCame" @click="scrollToBottom">
+      Новые сообщения
+    </div>
   </div>
 </template>
 
@@ -23,11 +26,17 @@ export default {
   },
   data () {
     return {
+      newMessageCame: false,
       intersectionObserver: new IntersectionObserver(this.handleIntersections)
     }
   },
   mounted () {
-    window.scrollTo(0, document.body.scrollHeight)
+    this.scrollToBottom()
+  },
+  watch: {
+    'messages.length' () {
+      this.newMessageCame = true
+    }
   },
   methods: {
     // hide Elements ain't seen on the screen to optimize render
@@ -39,6 +48,10 @@ export default {
           this.$set(entry, 'target.hidden', true)
         }
       })
+    },
+    scrollToBottom () {
+      window.scrollTo(0, document.body.scrollHeight)
+      this.newMessageCame = false
     }
   },
   directives: {
